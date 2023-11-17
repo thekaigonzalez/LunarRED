@@ -62,7 +62,7 @@ lunar_buffer_copy (Lunar_Buffer *b)
   if (b == NULL)
     return NULL;
 
-  char *n = LMalloc(sizeof (char) * (b->size + 1));
+  char *n = LMalloc(sizeof (char) * (b->size + 2));
   memcpy (n, b->ptr, b->size);
   
   n[b->size] = '\0';
