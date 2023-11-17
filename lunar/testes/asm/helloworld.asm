@@ -4,10 +4,10 @@
 # in the future, there may be fewer restrictions and multiple-letter
 # subroutines will be allowed
 @M:
-    init R1
-    
+    init R21
+    null
     mov R1, 3
-
+    null
     each R1
-
+    null
     halt
