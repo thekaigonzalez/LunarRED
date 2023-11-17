@@ -1,30 +1,18 @@
-lunarred assembler - a lightweight assembly language for the OpenLUD and NexFUSE
+LunarRED Assembly - a lightweight language for the OpenLUD and NexFUSE
 bytecode formats
 
 Copyright (C) LunarRED Team. All Rights Reserved.
 
-sample program (for those of you who don't want to open the source):
+LunarRED
 
-    # always initialize registers that your program may use
-    # if you don't your program may have unexpected behavior
-    # one-letter subroutine names are allowed in NexFUSE but not OpenLUD
-    # in the future, there may be fewer restrictions and multiple-letter
-    # subroutines will be allowed
-    @M:
-    # move 0x42 into R1
-        mov R1, 0x42
-        null
+    An entirely open-source assembly language for the OpenLUD and NexFUSE
+    bytecode formats, with little to no overhead.
 
-    # move newline into R1
-        mov R1, 0x0a
-        null
-        
-    # output each byte in R1
-        each R1
-        null
-
-    # signal end of program
-        halt
-
-
-see examples in testes/asm
+    LunarRED is not a language itself, it is a compiler, the language that is
+    translated into bytecode is called LR Assembly (LunarRED Assembly). LunarRED
+    assembly follows very similar conventions to other assemblers, except the
+    learning curve for past assembly developers may be much steeper than
+    anticipated.
+    
+    LunarRED comments start with '#', and comments are not allowed on the same
+    line as any code.
