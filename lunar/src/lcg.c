@@ -11,17 +11,20 @@ lunar_cg_init (Lunar_Compiler compiler)
       return NULL;
     }
 
-  cg->code = LMalloc (sizeof (byte) * LUNARRED_MEMORY_INCREMENT);
+  cg->code = calloc (LUNARRED_MEMORY_INCREMENT, sizeof (byte));
 
   if (cg->code == NULL)
     {
       printf ("warning: out of memory\n");
       LFree (cg);
+      return NULL;
     }
 
   cg->size = 0;
   cg->cap = LUNARRED_MEMORY_INCREMENT;
   cg->compiler = compiler;
+
+  return cg;
 }
 
 void
