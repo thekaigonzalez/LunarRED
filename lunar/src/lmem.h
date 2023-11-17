@@ -5,8 +5,8 @@
 
 #include "lunarred.h"
 
-#define LMalloc(x) malloc(x)
-#define LRealloc(x, y) realloc(x, y)
-#define LFree(x) free(x)
+void* LMalloc (size_t size);
+void* LRealloc (void *ptr, size_t size);
+void LFree (void *ptr);
 
 #endif
