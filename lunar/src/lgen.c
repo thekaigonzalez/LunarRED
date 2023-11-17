@@ -9,6 +9,7 @@ void
 lunar_generate (lunar_CG *generator, Lunar_Array *tokens)
 {
   _Bool subroutine = false;
+  _Bool inCall = false;
 
   for (int i = 0; i < tokens->size; i++)
     {
@@ -47,7 +48,13 @@ lunar_generate (lunar_CG *generator, Lunar_Array *tokens)
         }
       else if (t->type == LCL_CALL && subroutine)
         {
+          if (inCall) {
+            lunar_cg_add (generator, 0x00);
+            inCall = false;
+          }
           lunar_cg_add (generator, std_map_search (t->ptr));
+
+          inCall = true;
         }
       else
         {
