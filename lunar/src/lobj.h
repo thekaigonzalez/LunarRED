@@ -29,6 +29,7 @@ typedef struct _Lunar_Array
   int size;
   int cap;
   int is_string_array; // if this is a string array (set this to prevent memory leaks)
+  int is_token_array;  // if this is a token array (set this to prevent memory leaks)
 } Lunar_Array;
 
 Lunar_Object *lunar_object_new ();
