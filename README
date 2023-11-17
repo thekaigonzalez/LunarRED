@@ -1,0 +1,33 @@
+lunarred assembler - a lightweight assembly language for the OpenLUD and NexFUSE
+bytecode formats
+
+can compile simple assembler to bytecode
+
+this program:
+
+init R1
+init R2
+
+@m:
+    mov R1, 3
+    ret
+
+start:
+    call @A
+    halt
+
+compiles to:
+
+INIT 1
+INIT 2
+
+SUB 109
+  MOV 1 3 NULL
+  END
+ENDSUB
+
+GOSUB 109
+
+END
+
+see examples in testes/asm
