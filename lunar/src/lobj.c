@@ -1,4 +1,5 @@
 #include "lobj.h"
+#include "ltok.h"
 #include "lbuf.h"
 
 Lunar_Object *
@@ -224,6 +225,10 @@ lunar_array_free (Lunar_Array *a)
     {
       if (a->is_string_array == 1) {
         LFree (((Lunar_Buffer*) a->ptr[i])->ptr);
+      }
+
+      else if (a->is_token_array == 1) {
+        LFree (((Lunar_Token*) a->ptr[i])->ptr);
       }
       
       LFree (a->ptr[i]);
