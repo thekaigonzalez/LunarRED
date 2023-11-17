@@ -1,9 +1,9 @@
 #include "lgen.h"
-#include "ltok.h"
 #include "lerr.h"
+#include "ltok.h"
 
-#include <stdbool.h>
 #include <ctype.h>
+#include <stdbool.h>
 
 void
 lunar_generate (lunar_CG *generator, Lunar_Array *tokens)
@@ -16,7 +16,8 @@ lunar_generate (lunar_CG *generator, Lunar_Array *tokens)
 
       if (t->type == LCL_SUBROUTINE_HEADER && !subroutine)
         {
-          if (generator->compiler != LUNAR_COMPILER_NEXFUSE && t->ptr[0] != 'M')
+          if (generator->compiler != LUNAR_COMPILER_NEXFUSE
+              && t->ptr[0] != 'M')
             {
               printf ("%sLR(generate): support error%s: subroutines are only "
                       "supported in NexFUSE.\n",
@@ -31,37 +32,63 @@ lunar_generate (lunar_CG *generator, Lunar_Array *tokens)
           if (hdr != 'M') // M is the signal for main, run all code at the base
             __sub (generator, hdr);
         }
-      else if (t->type == LCL_SUBROUTINE_HEADER && subroutine) {
-        if (generator->compiler != LUNAR_COMPILER_NEXFUSE) {
-          printf ("%sLR(generate): support error%s: subroutines are only supported in NexFUSE.\n", YELLOW, RESET);
-          printf ("\t[C]: did you mean to use the -n flag?\n");
-          return;
+      else if (t->type == LCL_SUBROUTINE_HEADER && subroutine)
+        {
+          if (generator->compiler != LUNAR_COMPILER_NEXFUSE
+              && generator->compiler != LUNAR_COMPILER_BOTH)
+            {
+              printf ("%sLR(generate): support error%s: subroutines are only "
+                      "supported in NexFUSE.\n",
+                      YELLOW, RESET);
+              printf ("\t[C]: did you mean to use the -n flag?\n");
+              return;
+            }
+          __endsub (generator);
         }
-        __endsub(generator);
-      } else if (t->type == LCL_CALL && subroutine) {
-        lunar_cg_add(generator, std_map_search(t->ptr));
-      } else {
-        if (t->type != LCL_PARAM) {
-          printf("%sLR(generate): error%s: unexpected token: `%s'\n", YELLOW, RESET, t->ptr);
-          return;
+      else if (t->type == LCL_CALL && subroutine)
+        {
+          lunar_cg_add (generator, std_map_search (t->ptr));
         }
+      else
+        {
+          if (t->type != LCL_PARAM)
+            {
+              printf ("%sLR(generate): error%s: unexpected token: `%s'\n",
+                      YELLOW, RESET, t->ptr);
+              return;
+            }
 
-        lunar_cg_add(generator, lunar_asByte(t));
-      }
+          lunar_cg_add (generator, lunar_asByte (t));
+        }
     }
 }
 
-byte lunar_asByte(Lunar_Token * t)
+
+
+byte
+lunar_asByte (Lunar_Token *t)
 {
-  if (t->ptr[0] == 'r') {
-    return atoi(t->ptr[1]);
-  }
-  if (t->ptr[0] == '0' && t->ptr[1] == 'x') {
-    return strtol(t->ptr, NULL, 16);
-  }
-  else {
-    if (lunar_lex_isnumeric(t->ptr)) {
-      return strtol(t->ptr, NULL, 10);
+  if (t->ptr[0] == 'r' || t->ptr[0] == 'R')
+    {
+      char *rgnum = LMalloc (sizeof (char) * 10);
+
+      strcpy (rgnum, t->ptr + 1);
+
+      int n = atoi (rgnum);
+
+      LFree (rgnum);
+
+      return n;
     }
-  }
+  if (t->ptr[0] == '0' && t->ptr[1] == 'x')
+    {
+      return strtol (t->ptr, NULL, 16);
+    }
+  else
+    {
+      if (lunar_lex_isnumeric (t->ptr))
+        {
+          return strtol (t->ptr, NULL, 10);
+        }
+    }
 }
