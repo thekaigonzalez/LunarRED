@@ -57,8 +57,12 @@ lunar_token_at (Lexer_State *L, int index)
 void
 lunar_lex_tokenize (Lexer_State *L, char *input)
 {
+  if (L == NULL || input == NULL) {
+    return;
+  }
   int i = 1;
   int len = strlen (input);
+  L->tokens->is_token_array = 1;
 
   int row = 0;
   int col = 0;
