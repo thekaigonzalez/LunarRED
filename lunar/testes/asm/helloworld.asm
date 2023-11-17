@@ -4,10 +4,17 @@
 # in the future, there may be fewer restrictions and multiple-letter
 # subroutines will be allowed
 @M:
-    init R21
+# move 0x42 into R1
+    mov R1, 0x42
     null
-    mov R1, 3
+
+# move newline into R1
+    mov R1, 0x0a
     null
+    
+# output each byte in R1
     each R1
     null
+
+# signal end of program
     halt
