@@ -1,7 +1,8 @@
 # actually hello world this time
 
 @M:
-  mov R1, 0x48
+# actually hello world this time
+  mov R1, 0x48 
   mov R1, 0x45
   mov R1, 0x4c
   mov R1, 0x4c
