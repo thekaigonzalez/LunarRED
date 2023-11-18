@@ -148,6 +148,9 @@ lunar_lex_tokenize (Lexer_State *L, char *input)
                 L->state = previous_state;
               }
 
+              break;
+            
+
             default:
               if (L->state != LUNAR_LEX_STATE_INITIAL || L->buf->size > 0)
                 {
@@ -276,6 +279,10 @@ lunar_lex_tokenize (Lexer_State *L, char *input)
       *input++;
       i++;
     }
+  if (L->buf->size > 0) {
+    printf("lunar(lexer): unexpected end of file\n");
+    return;
+  }
 }
 
 void
