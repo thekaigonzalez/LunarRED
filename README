@@ -16,3 +16,9 @@ LunarRED
     
     LunarRED comments start with '#', and comments are not allowed on the same
     line as any code.
+
+To build
+
+    To build LunarRED, you must run `sudo make' and `make all' from the `src'
+    directory. This will build the ArgWizard library, add it to /usr/lib, then 
+    build LunarRED with it linked.
