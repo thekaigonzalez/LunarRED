@@ -1,8 +1,10 @@
 #include "lunar.h"
 
+
 #include <libgen.h>
 #include <stdbool.h>
 #include <getopt.h>
+#include <argw.h>
 
 int
 pmain (int argc, char *argv[])
@@ -13,66 +15,32 @@ pmain (int argc, char *argv[])
   char *outfile = "a.out";
 
   int optiond;
-  if (argc != 3)
-    {
-      printf ("usage: %s <filename> [options]\n", argv[0]);
-      return 0;
-    }
 
-  // Define the options
-  struct option long_options[] = { { "nexfuse", no_argument, 0, 'n' },
-                                   { "openlud", no_argument, 0, 'o' },
-                                   { "both", no_argument, 0, 'b' },
-                                   { "output", required_argument, 0, 'f' },
-                                   { 0, 0, 0, 0 } };
-
-  while ((optiond = getopt_long (argc, argv, "no:bf", long_options, NULL)) != -1)
-    {
-      switch (optiond)
-        {
-        case 'n':
-          nexfuse = true;
-          break;
-        case 'o':
-          openlud = true;
-          break;
-        case 'b':
-          nexfuse = true;
-          openlud = true;
-          break;
-        case 'f':
-          outfile = optarg;
-          break;
-        default:
-          printf ("usage: %s <filename> [options]\n", argv[0]);
-          return 1;
-        }
-    }
-
-  char *filename = argv[optind];
-
-  if (filename == NULL)
-    {
-      printf ("usage: %s <filename> [options]\n", argv[0]);
-      return 1;
-    }
+  char* filename = "";
 
   char c;
 
-  Lunar_Compiler cz = LUNAR_COMPILER_NEXFUSE;
+  argw_init();
 
-  if (nexfuse && !openlud)
+  argw_flag('n', "nexfuse", "NexFuse compiler", WBoolean);
+  argw_flag('l', "openlud", "OpenLUD compiler", WBoolean);
+  argw_flag('o', "output", "Output file", WString);
+
+  argw_parse(argc, argv);
+
+  filename = argw_positional(0);
+  outfile = argw_str('o');
+
+  nexfuse = argw_bool('n');
+  openlud = argw_bool('l');
+
+  if (wArgParserHelpWanted (parser) || wArgParserError (parser) || filename == NULL)
     {
-      cz = LUNAR_COMPILER_NEXFUSE;
+      argw_usage("[-nlo] <filename>");
+      argw_exit(0);
     }
-  else if (openlud && !nexfuse)
-    {
-      cz = LUNAR_COMPILER_OPENLUD;
-    }
-  else if (nexfuse && openlud)
-    {
-      cz = LUNAR_COMPILER_BOTH;
-    }
+
+  Lunar_Compiler cz = LUNAR_COMPILER_NEXFUSE;
 
   Lexer_State *state = lunar_lexnew ();
   Lunar_Buffer *buf = lunar_buffer_new ();
@@ -99,7 +67,7 @@ pmain (int argc, char *argv[])
   lunar_lex_tokenize (state, buf->ptr);
   lunar_generate (cg, state->tokens);
 
-  FILE *out = fopen ("a.out", "wb");
+  FILE *out = fopen (outfile, "wb");
 
   if (out == NULL)
     {
