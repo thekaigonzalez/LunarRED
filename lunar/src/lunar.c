@@ -25,6 +25,7 @@ pmain (int argc, char *argv[])
   argw_flag('n', "nexfuse", "NexFuse compiler", WBoolean);
   argw_flag('l', "openlud", "OpenLUD compiler", WBoolean);
   argw_flag('o', "output", "Output file", WString);
+  argw_flag('v', "version", "Print version", WBoolean);
 
   argw_parse(argc, argv);
 
@@ -33,7 +34,11 @@ pmain (int argc, char *argv[])
 
   nexfuse = argw_bool('n');
   openlud = argw_bool('l');
-
+  int version = argw_bool('v');
+if (version) {
+    printf("lunar version: %s\n", LUNARRED_VERSION_LONG);
+    argw_exit(0);
+  }
   if (wArgParserHelpWanted (parser) || wArgParserError (parser) || filename == NULL)
     {
       argw_usage("[-nlo] <filename>");
