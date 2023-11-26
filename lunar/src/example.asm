@@ -2,8 +2,6 @@
 
 @M:
   echo 0x42
-  null
   echo 0x0a
-  null
 
   halt
