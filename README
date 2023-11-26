@@ -22,3 +22,19 @@ To build
     To build LunarRED, you must run `sudo make' and `make all' from the `src'
     directory. This will build the ArgWizard library, add it to /usr/lib, then 
     build LunarRED with it linked.
+
+LunarRED options
+
+usage:
+        ./lunar [-nlo] <filename>
+
+flags:
+        -n --nexfuse
+                NexFuse compiler
+        -l --openlud
+                OpenLUD compiler
+        -o --output
+                Output file
+        -v --version
+                Print version
+                
